@@ -1,0 +1,20 @@
+#!/usr/bin/env ansible-playbook
+- name: Add database to Azure Postgres server
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Create (or update) PostgreSQL Database
+      azure_rm_postgresqldatabase:
+        resource_group: "{{resource_group}}"
+        server_name: "{{server_name}}"
+        name: "{{database_name}}"
+
+    - name: Get instance of PostgreSQL Database
+      azure_rm_postgresqldatabase_info:
+        resource_group: "{{resource_group}}"
+        server_name: "{{server_name}}"
+        name: "{{database_name}}"
+
+#https://docs.microsoft.com/en-us/cli/azure/postgres?view=azure-cli-latest  (more stuff can be done with az than ansible)
+#run ansible playbook via jenkins pipeline step
+#ansible-playbook Ansible/add_database.yml --extra-vars "resource_group=postgres-sql server_name=postgres-server-test-1234 database_name=test" -vvv

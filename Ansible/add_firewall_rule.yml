@@ -1,0 +1,21 @@
+#!/usr/bin/env ansible-playbook
+- name: Add postgres firewall rule
+  hosts: localhost
+  gather_facts: false
+  tasks:
+  - name: Create (or update) PostgreSQL firewall rule
+    azure_rm_postgresqlfirewallrule:
+      resource_group: "{{resource_group}}"
+      server_name: "{{server_name}}"
+      name: "{{name}}"
+      start_ip_address: "{{start_ip}}"
+      end_ip_address: "{{end_ip}}"
+  - name: Get instance of PostgreSQL Firewall Rule
+    azure_rm_postgresqlfirewallrule_info:
+      resource_group: "{{resource_group}}"
+      server_name: "{{server_name}}"
+      name: "{{name}}"
+
+#more stuff can be done with the az cli https://docs.microsoft.com/en-us/cli/azure/postgres?view=azure-cli-latest
+#run ansible playbook via jenkins pipeline step
+#ansible-playbook Ansible/add_firewall_rule.yml --extra-vars "resource_group=postgres-sql server_name=postgres-server-test-1234 name=test" start_ip_address=8.8.8.8 end_ip_address=8.8.8.8 -vvv
