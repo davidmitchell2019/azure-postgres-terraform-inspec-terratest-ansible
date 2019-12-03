@@ -50,7 +50,7 @@ func TestTerraformPostgresql(t *testing.T) {
 	var dbNames = []string{"test"}
 	terraformOptions := &terraform.Options{
 		// The path to where our Terraform code is located
-		TerraformDir: "/Users/ddmc/PycharmProjects/azuresql",
+		TerraformDir: ".",
 	}
 
 	// This will init and apply the resources and fail the test if there are any errors
