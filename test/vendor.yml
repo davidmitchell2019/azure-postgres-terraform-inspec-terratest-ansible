@@ -1,0 +1,25 @@
+vendors:
+- path: github.com/Bowery/prompt
+  rev: fa8279994f75f982bdae3c827a3afffd78a6fe0d
+- path: github.com/dchest/safefile
+  rev: 855e8d98f1852d48dde521e0522408d1fe7e836a
+- path: github.com/google/shlex
+  rev: e7afc7fbc51079733e9468cdfd1efcd7d196cd1d
+- path: github.com/kardianos/govendor
+  rev: c566a4b943a2add75335130747e43f48e282b56e
+- path: github.com/kr/pretty
+  rev: 71e7e49937503c662b9b636fd6b2c14b1aa818a5
+- path: github.com/kr/text
+  rev: e2ffdb16a802fe2bb95e2e35ff34f0e53aeef34f
+- path: github.com/pkg/errors
+  rev: 7f95ac13edff643b8ce5398b6ccab125f8a20c1a
+- path: golang.org/x/crypto
+  rev: 86a70503ff7e82ffc18c7b0de83db35da4791e6a
+- path: golang.org/x/sys
+  rev: 6d18c012aee9febd81bbf9806760c8c4480e870d
+- path: golang.org/x/tools
+  rev: c197fd4bf3712fd6a7d00f39b376956dd5d58449
+- path: gopkg.in/check.v1
+  rev: 41f04d3bba152ddec2103e299fed053415705330
+- path: gopkg.in/yaml.v2
+  rev: 1f64d6156d11335c3f22d9330b0ad14fc1e789ce
