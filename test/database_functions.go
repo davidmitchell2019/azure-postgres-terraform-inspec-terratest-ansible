@@ -35,10 +35,14 @@ func DBConnectionE(t *testing.T, dbType string, dbConfig DBConfig) (*sql.DB, err
 	return db, nil
 }
 
-// DBExecution executes specific SQL commands, i.e. insertion. If there's any error, fail the test.
-func DBExecution(t *testing.T, db *sql.DB, command string) {
+// DBExecution executes specific SQL commands, i.e. insertion. If there's any error, fail the test and run cleanup command.
+func DBExecution(t *testing.T, db *sql.DB, command string, cleanUpCommand string) {
 	_, err := DBExecutionE(t, db, command)
 	if err != nil {
+	    _, err := DBExecutionE(t, db, cleanUpCommand)
+	    if err != nil {
+	        t.Fatal(err)
+	    }
 		t.Fatal(err)
 	}
 }
@@ -71,11 +75,12 @@ func DBQueryE(t *testing.T, db *sql.DB, command string) (*sql.Rows, error) {
 }
 
 // DBQueryWithValidation queries from database and validate whether the result is the same as expected text. If there's any error, fail the test.
-func DBQueryWithValidation(t *testing.T, db *sql.DB, command string, expected string) {
+func DBQueryWithValidation(t *testing.T, db *sql.DB, command string, expected string) bool {
 	err := DBQueryWithValidationE(t, db, command, expected)
 	if err != nil {
-		t.Fatal(err)
+		return false
 	}
+	return true
 }
 
 // DBQueryWithValidationE queries from database and validate whether the result is the same as expected text. If not, return an error.

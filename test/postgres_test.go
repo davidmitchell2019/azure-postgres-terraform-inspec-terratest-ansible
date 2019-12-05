@@ -20,27 +20,33 @@ func VerifyDB(t *testing.T, dbConfig DBConfig, db_name string) {
 	retry.DoWithRetry(t, description, maxRetries, timeBetweenRetries, func() (string, error) {
 		// Connect to specific database, i.e. mssql
 		db := DBConnection(t, "postgres", dbConfig)
+		cleanUpCommand := "drop table person"
 
 		// Create a table
 		creation := "create table person (id integer, name varchar(30), primary key (id))"
-		DBExecution(t, db, creation)
+		DBExecution(t, db, creation, cleanUpCommand)
 
 		// Insert a row
 		expectedID := 12345
 		expectedName := "azure"
 		insertion := fmt.Sprintf("insert into person values (%d, '%s')", expectedID, expectedName)
-		DBExecution(t, db, insertion)
+		DBExecution(t, db, insertion, cleanUpCommand)
 
 		// Query the table and check the output
 		query := "select name from person"
-		DBQueryWithValidation(t, db, query, "azure")
-
-		// Drop the table
 		drop := "drop table person"
-		DBExecution(t, db, drop)
-		fmt.Println("Wrote the user Peter Macallister to the new table, tested and then dropped the table")
+		isValid := DBQueryWithValidation(t, db, query, "azure")
+
+		if !isValid {
+		    DBExecution(t, db, drop, "")
+		    db.Close()
+		    t.Fail()
+    	}
+		DBExecution(t, db, drop, "")
+		fmt.Println("Wrote the user azure to the new table, tested and then dropped the table")
 
 		defer db.Close()
+
 		return "", nil
 	})
 }
@@ -50,11 +56,11 @@ func TestTerraformPostgresql(t *testing.T) {
 	var dbNames = []string{"test"}
 	terraformOptions := &terraform.Options{
 		// The path to where our Terraform code is located
-		TerraformDir: ".",
+		TerraformDir: "/Users/ddmc/PycharmProjects/azure-postgres",
 	}
 
 	// This will init and apply the resources and fail the test if there are any errors
-	//terraform.InitAndApply(t, terraformOptions)
+	terraform.InitAndApply(t, terraformOptions)
 
 	// Setting database configuration, including server name, user name, password and database name
 	var dbConfig DBConfig
